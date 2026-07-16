@@ -51,6 +51,6 @@ class ClienteController extends Controller
 
         $novoCliente->save();
 
-        return redirect('/clientes');
+        return redirect('/clientes')->with('success', 'Cliente cadastrado com sucesso!');
     }
 }

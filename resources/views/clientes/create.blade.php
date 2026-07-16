@@ -1,57 +1,97 @@
-<!doctype html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-    <nav class="bg-gray-300">
-        <div class="container mx-auto flex items-center justify-between p-4">
-            <a href="/" class="text-2xl font-semibold">Treinaweb</a>
-        
-            <ul class="font-medium flex">
-                <li class="px-4">
-                    <a href="/clientes">Cadastro de Clientes</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+@extends('layouts.app')
 
-    <div class="container mx-auto">
-        <h1 class="text-4xl font-bold text-center my-4">
-            Cadastrar novo Cliente
+@section('title', 'Cadastrar Cliente')
+
+@section('content')
+    <div class="mb-8">
+        <a href="/clientes" class="text-sm font-medium text-brand-600 hover:text-brand-700">
+            ← Voltar para a lista
+        </a>
+        <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900">
+            Cadastrar novo cliente
         </h1>
+        <p class="mt-2 text-sm text-slate-500">
+            Preencha os campos abaixo para adicionar um cliente.
+        </p>
+    </div>
 
+    <div class="mx-auto max-w-2xl">
         @if ($errors->any())
-            <div class="flex justify-between items-center p-2 bg-red-500 text-white border-2 border-red-500 rounded-sm">
-                <span class="text-xs">Erros de validação</span>
-                <ul class="flex flex-col mt-1">
-                @foreach($errors->all() as $error)
-                    <li class="text-sm text-center">{{ $error }}</li>
-                @endforeach
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800" role="alert">
+                <p class="text-sm font-semibold">Erros de validação</p>
+                <ul class="mt-2 list-inside list-disc space-y-1 text-sm">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
                 </ul>
             </div>
         @endif
 
-        <form method="post" action="/clientes" class="max-w-6xl mx-auto">
+        <form method="post" action="/clientes" class="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
             @csrf
-            <div class="mb-5">
-                <label for="nome" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome do cliente</label>
-                <input type="text" id="nome" name="nome" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+
+            <div>
+                <label for="nome" class="mb-1.5 block text-sm font-medium text-slate-700">
+                    Nome do cliente
+                </label>
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    value="{{ old('nome') }}"
+                    placeholder="Ex.: Maria Silva"
+                    class="block w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 @error('nome') border-red-400 focus:border-red-500 focus:ring-red-500/30 @enderror"
+                >
+                @error('nome')
+                    <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p>
+                @enderror
             </div>
-            <div class="mb-5">
-                <label for="endereco" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Endereço do cliente</label>
-                <input type="text" id="endereco" name="endereco" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+
+            <div>
+                <label for="endereco" class="mb-1.5 block text-sm font-medium text-slate-700">
+                    Endereço do cliente
+                </label>
+                <input
+                    type="text"
+                    id="endereco"
+                    name="endereco"
+                    value="{{ old('endereco') }}"
+                    placeholder="Ex.: Rua das Flores, 123"
+                    class="block w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 @error('endereco') border-red-400 focus:border-red-500 focus:ring-red-500/30 @enderror"
+                >
+                @error('endereco')
+                    <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p>
+                @enderror
             </div>
-            <div class="mb-5">
-                <label for="descricao" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descrição do cliente</label>
-                <input type="text" id="descricao" name="descricao" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light">
+
+            <div>
+                <label for="descricao" class="mb-1.5 block text-sm font-medium text-slate-700">
+                    Descrição do cliente
+                </label>
+                <textarea
+                    id="descricao"
+                    name="descricao"
+                    rows="4"
+                    placeholder="Observações ou detalhes do cliente..."
+                    class="block w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30 @error('descricao') border-red-400 focus:border-red-500 focus:ring-red-500/30 @enderror"
+                >{{ old('descricao') }}</textarea>
+                @error('descricao')
+                    <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p>
+                @enderror
             </div>
-            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cadastrar Cliente</button>
+
+            <div class="flex flex-col-reverse gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:justify-end">
+                <a href="/clientes"
+                   class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                    Cancelar
+                </a>
+                <button
+                    type="submit"
+                    class="inline-flex items-center justify-center rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
+                >
+                    Cadastrar cliente
+                </button>
+            </div>
         </form>
     </div>
-</body>
-</html>
-
-
+@endsection
